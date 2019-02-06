@@ -1,5 +1,12 @@
 "use strict";
 
+/**
+ * Reads in the request body and, assuming it to be in the format of
+ * VisABAC's 'save policy' tool, parses the policy and attributes and
+ * returns the policy evaluations.
+ * 
+ * @author James Robertson
+ */
 exports.evaluate = function(req, res) {
     var textParser = require("../functions/parseTextFile");
     var policyParser = require("../functions/parsePolicyRules");

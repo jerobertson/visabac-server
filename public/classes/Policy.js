@@ -3,6 +3,9 @@
  * David Sanchez
  * Newcastle University. 2017
  * 
+ * Minor modifications made by James Robertson, Newcastle University, 2019 to provide
+ * support for both client-side evaluation and server-side evaluation with Node.js.
+ * 
  * This is the policy object structure. 
  * 
  * This notation is for object methods:
@@ -1141,6 +1144,7 @@ var Policy = function (policyAttributeValues, policyRules) {
      * @returns {Array|type}
      */
     var parseCompositionToTree = function (policyID, composition) {
+        //If we can't find the Node class, we're on the server and can skip this bit.
         if (typeof Node === 'undefined') return;
 
         //This stack is used to keep track of the whole stack of operations
@@ -1728,4 +1732,5 @@ var Policy = function (policyAttributeValues, policyRules) {
     init();
 };
 
+//If exports exists, we're on the server and need to export this class as a module.
 if (typeof exports !== 'undefined') exports.Policy = Policy;

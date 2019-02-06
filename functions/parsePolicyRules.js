@@ -1,5 +1,25 @@
 "use strict";
 
+/**
+     * Extracted from Visualiser.js by David Sanchez, Newcastle University, 2016.
+     * Modified by James Robertson, Newcastle University, 2019, to work with Node.js.
+     *  
+     * This method reads the private _logic variable and create a Javascript object
+     * 
+     * Example:
+     * 
+     * Entering this into the interface
+     * 
+     * R1:Deny if PATIENT_disagrees
+     * R2:Permit if OR(HOSPITAL_agrees,SURGEON_agrees)
+     * P:DOV(R1, R2)
+     * 
+     * It should generates the equivalent object
+     * 
+     * {"R1":"Deny if PATIENT_disagrees","R2":"Permit if OR(HOSPITAL_agrees,SURGEON_agrees)","P":"DOV(R1, R2)"}
+     * 
+     * @returns {policyRules}
+     */
 exports.parsePolicyRules = function (_logic) {
 
     //It creates a new object policyRules to store the rules to be processed
