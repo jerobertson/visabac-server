@@ -1,0 +1,57 @@
+/* =============================================================================
+David Sanchez
+Newcastle University. 2017
+  
+Generic styles used in the logic Circle Packing visualisation technique regarding of
+colour Deficiency capabilities 
+ 
+Note:
+
+# used to select an element by ID
+. used to select elements by class
+============================================================================= */
+
+.node {
+    /* Attributes for each of the circles */
+    cursor: pointer;
+    /*fill-opacity:1;*/
+    /*fill-opacity:0.75;*/
+    stroke: rgb(50,51,55);
+    stroke-width: 15px;
+}
+
+.node:hover {
+    /* This css makes a node circle line to become thicker when the mouse hovers on it*/        
+    stroke: #000;
+    stroke-width: 25px;
+}
+
+.node--leaf {
+    /* This is the node circle line of elements which are leafs. 
+    They have not been implemented at the end bu the idea was to have thin lines 
+    when attributes are said to be shown. 
+    */
+    fill: white;
+    fill-opacity:1;
+    stroke: rgb(50,51,55);
+    stroke-width: 2px;
+}
+
+.label {
+    /* This defines the size of the labels. For screen shots 35px was used. 
+     Just for screen shots I used 35px
+     font: 35px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    */
+    font: 24px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    text-anchor: middle;
+
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+}
+
+.label,
+.node--root,
+.node--leaf {
+    /* For all these elements there would not be pointer-events */
+    pointer-events: none;
+}

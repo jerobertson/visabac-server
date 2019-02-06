@@ -1,0 +1,202 @@
+/* =============================================================================
+David Sanchez
+Newcastle University. 2017
+  
+Styles used to show help page
+ 
+Note:
+
+# used to select an element by ID
+. used to select elements by class
+============================================================================= */
+
+html,body{
+    padding:00px;
+    margin:00px;
+    width:100%;
+    height:100%;
+}
+
+fieldset { 
+    display: block;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border: 0px groove;
+}
+
+h1{
+    font-family: sans-serif;
+    padding-left: 10px;
+}
+
+.continueButton{
+
+    font-weight: bold;
+    text-align: center; 
+}
+
+.rule{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-left: 1cm;
+    margin-right: 1cm;
+    display: block;
+    text-align:left; 
+    padding-top: 8px; 
+    padding-right:8px; 
+    padding-bottom: 8px; 
+    padding-left: 8px; 
+    background: floralwhite;
+    border: 1px solid lightgray;
+}
+
+.footnote{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size-adjust: 0.4;
+    margin-left: 1cm;
+    margin-right: 1cm;
+    display: block;
+    text-align:left; 
+}
+
+.tableText{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    display: block;
+    text-align:left; 
+    font-weight: bold;
+}
+
+.tableSubText{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    display: block;
+    text-align:left; 
+    text-decoration:underline;
+}
+
+
+.introList{
+    text-align:left;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.spaceIntro{
+    margin-bottom: 1cm;
+}
+
+.spaceContinue{
+    margin-bottom: 1cm;
+}
+
+img{
+    margin-top: 0.5cm;
+    opacity:1;
+    padding-left: 10px;
+}
+
+
+ul.tab {
+    /* Style the list */
+    list-style-type: none;
+    margin: 0px;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+
+    font-family: sans-serif;
+}
+
+
+ul.tab li {
+    /* Float the list items side by side */
+    float: left;
+}
+
+ul.tab li a {
+    /* Style the links inside the list items */
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+ul.tab li a:hover {
+    /* Change background color of links on hover */
+    background-color: #ddd;
+}
+
+
+ul.tab li a:focus, .active {
+    /* Create an active/current tablink class */    
+    background-color: #ccc;
+}
+
+.tabcontent {
+    /* Style the tab content */
+    display: none;
+    padding: 6px 12px;
+    border-top: none;
+
+    /*font-family: sans-serif;*/
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    margin-left: 3cm;
+    margin-right: 3cm;
+
+    text-align:left; 
+}
+
+.backgroundTable{
+    /*font-family: sans-serif;*/
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    display: block;
+    text-align:center; 
+    padding-top: 8px; 
+    padding-right:8px; 
+    padding-bottom: 8px; 
+    padding-left: 8px; 
+    background: oldlace;
+    box-shadow: 2px 2px 10px 0px #000000;
+}
+
+table {
+    /*font-family: arial, sans-serif;*/
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    height:100%;
+
+    background-color: #808080;
+    display: table-cell; 
+}
+
+.spaceBetweenTables{
+    margin-bottom: 1cm;
+}
+
+.tabcontent {
+    -webkit-animation: fadeEffect 1s;
+    animation: fadeEffect 1s; /* Fading effect takes 1 second */
+}
+
+@-webkit-keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}

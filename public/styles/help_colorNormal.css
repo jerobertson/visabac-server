@@ -1,0 +1,132 @@
+/* =============================================================================
+David Sanchez
+Newcastle University. 2017
+  
+Styles used to show help page for color normal users
+ 
+Note:
+
+# used to select an element by ID
+. used to select elements by class
+============================================================================= */
+
+.permitInLine{
+    background-color: #000000;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+    /*Custom Green*/
+    color: #3CA542;
+    display: inline-block; 
+
+    border: 1px solid floralwhite;
+}
+
+.smallPermitInLine{
+    background-color: #000000;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+
+    /*Custom Green*/
+    color: #3CA542;
+    display: inline-block; 
+}
+.denyInLine{
+    background-color: #000000;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+    /*Custom Red*/
+    color: #D77B79;
+    display: inline-block; 
+
+    border: 1px solid floralwhite;
+}
+
+.smallDenyInLine{
+    background-color: #000000;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+
+    /*Custom Red*/
+    color: #D77B79;
+    display: inline-block; 
+}
+.notApplicableInLine{
+    background-color: #000000;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+    color: #FFFFFF;
+    display: inline-block; 
+
+    border: 1px solid floralwhite;
+}
+
+.indeterminateInLine{
+    background-color: #000000;
+    padding-left: 10px;
+    padding-right: 9px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+
+    color: #D3D3D3;
+    display: inline-block;
+
+    border: 1px solid floralwhite;
+}
+
+.permit{
+    /*Custom Green*/
+    background-color: #3CA542;
+    display: table-cell; 
+}
+
+.deny{
+    /*Custom Red*/
+    background-color: #D77B79;
+    display: table-cell; 
+}
+
+.notApplicable{
+    background-color: #FFFFFF;
+    display: table-cell; 
+}
+.indeterminate-Permit{
+    background-color: #D3D3D3;
+    display: table-cell; 
+}
+
+.indeterminate-Deny{
+    background-color: #D3D3D3;
+    display: table-cell; 
+}
+
+.indeterminate-PermitDeny{
+    background-color: #D3D3D3;  
+    display: table-cell; 
+}
+
+.permitColor{
+    /*Custom Green*/
+    color: #3CA542; 
+}
+
+.denyColor{
+    /*Custom Red*/
+    color: #D77B79; 
+}
+
+.permitDenyColor{
+    color: #A9A9A9;
+}

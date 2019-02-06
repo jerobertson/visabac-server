@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--
+
+David Sanchez
+Newcastle University. 2017.
+
+This is the preferences page.
+
+-->
+
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>Preferences</title>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="../styles/preferences.css" media="screen" rel="stylesheet" type="text/css"/>
+
+    </head>
+
+
+
+
+
+    <body> 
+        <img src="../images/Newcastle-University-logo.jpg" alt="" WIDTH=150>
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - h1-->
+        <h1> VisABAC </h1>
+
+
+
+
+
+        <div class="space"></div>
+
+
+
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - -Preferences-->
+        <div id="panelMain">   
+            <form>
+                <fieldset>
+                    <legend></legend>
+                    <div id="panelPreferences" class="child">
+
+
+
+
+
+                        <div>
+                            <!-- - - - - - - - - - - - - - - - --Colour Vision Deficiency-->
+                            <p>
+                                <label class="radioAttribute">Colour Preferences</label>
+                                <input class="radioElement" id="PreferencesColourNormal" name="preferenceColourGroup" value="Normal" checked="checked" type="radio">
+                                <label class="radioLabel">Normal</label>
+
+                                <input class="radioElement" id="PreferencesColourDeficiency" name="preferenceColourGroup" value="ColourVisionDeficiency" type="radio">
+                                <label class="radioLabel">Colour Vision Deficiency</label>
+                            </p>
+                        </div>
+                        
+                      
+
+
+
+
+
+
+
+                    </div>               
+                </fieldset>
+                
+                 
+
+            </form>
+
+
+
+
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - Save Button -->
+            <div class="spaceContinue"></div>
+
+            <form>
+                <input id="saveButton" type="button"  value="Save" onclick="savePreferences();return false;" />
+            </form>
+
+            <div class="spaceContinue"></div>
+            
+             Reload the visualiser (and help) after saving these preferences to see changes (Reloading may cause losing unsaved work).
+
+        </div>
+        <script type="text/javascript" src="../scripts/preferences.js"></script>   
+    </body>
+</html>
+

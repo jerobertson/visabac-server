@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<!--
+
+David Sanchez
+Newcastle University. 2017.
+
+This is the visualiser form.
+
+-->
+
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>Visualiser</title>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="libraries/d3.v3.js" type="text/javascript"></script>       
+        <!--------------------------------------------------------------------------->
+        <link href="styles/logicCirclePacking.css" rel="stylesheet" type="text/css"/>
+        <!--------------------------------------------------------------------------->
+        <link href="styles/visualiserForm.css" rel="stylesheet" type="text/css"/>
+        <link href="styles/visualiserForm_colorNormal.css" rel="stylesheet" type="text/css" id="styleNormal" title="styleNormal"/>
+        <link href="styles/visualiserForm_colorDeficiency.css" rel="alternate stylesheet" type="text/css" id="styleVisionDeficiency" title="styleVisionDeficiency"/>
+
+    </head>
+
+
+
+
+    <body>  
+
+
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - -  - - - Logo-->
+        <img src="images/Newcastle-University-logo.jpg" alt="" WIDTH=150 >
+
+
+
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - Extra controls-->
+        <div id="panelExtraControls">
+            <fieldset>
+                <input id="aboutButton" type="button" value="About" onclick="window.open('pages/about.html', 'About');" />
+                <input id="preferencesButton" type="button" value="Preferences" onclick="window.open('pages/preferences.html', 'Preferences');" />
+                <input id="helpButton" type="button" value="Help" onclick="window.open('pages/help.html', 'Help');" />
+            </fieldset>
+        </div>
+
+
+
+
+
+
+
+
+
+        <!--  - - - - - - - - - - - - - - - - - - - - - - - - - - -Main Panel-->
+        <div id="panelMain">
+
+
+
+
+
+            <!---  - - - - - - - - - - - - - - - - - - - - - - - - Panel Left-->
+            <div id="panelLeft" >                           
+                <div id="container">
+                </div>
+            </div>
+
+
+
+
+
+            <!--  - - - - - - - - - - - - - - - - - - - - - - - - Panel right-->
+            <div id="panelRight">   
+                <form name="myForm">
+
+                    <fieldset>
+                        <legend>Policy</legend>
+                        <textarea id="policy" rows="4" cols="60" class="panelPolicy" spellcheck="false"></textarea>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Policy Evaluation</legend>
+                        <div id="panelConsole" >
+                            <p id="console">Console</p>
+                        </div>               
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Policy Attributes</legend>
+                        <div id="panelPolicyDetails" class="child">
+                        </div>
+                    </fieldset>
+
+                </form>
+
+
+                <!--  - - - - - - - - - - - - - - - - - - - - - - - -Controls-->
+                <div id="panelControlsLeft">                    
+                    <input id="addAttribute" type="button" class="button" value="Add Attribute" onclick="visualiser.addAttribute();return false;" />
+
+                    <input id="deleteAttribute" type="button" class="button" value="Delete" disabled="disabled" onclick="visualiser.deleteSelectedAttributes();return false;" /> 
+
+                    <select id="samples_dropdown">
+                        <option value="None" selected="selected">Samples...</option>
+                    </select>
+
+                    <input id="loadPolicy" type="button" class="button" value="Load Policy..." onclick="document.getElementById('hiddenLoadPolicy').click();" />
+                    <input type="file" style="display:none;" id="hiddenLoadPolicy"  name="files"/>
+
+                    <input id="savePolicy" type="button" class="button" value="Save Policy..." onclick="visualiser.save();return false;" />
+                </div>
+
+
+
+
+
+                <div id="panelControlsRight">
+                    <input id="evaluateButton" type="button" class="evalButton" value="Evaluate" onclick="visualiser.evaluate();return false;" />
+                </div>
+
+
+
+
+
+            </div>
+        </div>      
+
+
+
+
+
+
+        <script type="text/javascript" src="classes/Node.js"></script>
+        
+        <!--------------------------------------------------------------------------->
+        <script type="text/javascript" src="classes/LogicCirclePacking_d3v3.js"></script>
+        <!--------------------------------------------------------------------------->
+         
+        <script type="text/javascript" src="scripts/preferences.js"></script>
+        <script type="text/javascript" src="classes/Policy.js"></script>
+        <script type="text/javascript" src="classes/Sample.js"></script>
+        <script type="text/javascript" src="classes/Visualiser.js"></script>
+        <script type="text/javascript" src="scripts/visualiserForm.js"></script>     
+    </body>
+
+</html>
+

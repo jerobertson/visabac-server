@@ -1,0 +1,39 @@
+/* =============================================================================
+David Sanchez
+Newcastle University. 2017
+  
+Styles used in the visualiser for normal vision capabilities.
+ 
+Note:
+
+# used to select an element by ID
+. used to select elements by class
+============================================================================= */
+
+.permitInLine{
+    background-color: #000000;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+    /*Green*/
+    color: #3CA542;
+    display: inline-block; 
+
+    border: 1px solid floralwhite;
+}
+
+.denyInLine{
+    background-color: #000000;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+    /*Red*/
+    color: #D77B79;
+    display: inline-block; 
+
+    border: 1px solid floralwhite;
+}

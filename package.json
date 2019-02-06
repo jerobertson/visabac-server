@@ -1,0 +1,16 @@
+{
+  "name": "s-visabac",
+  "version": "1.0.0",
+  "description": "ABAC visualiser and policy manipulator",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "James Robertson",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
+}

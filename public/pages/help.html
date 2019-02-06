@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<!--
+
+David Sanchez
+Newcastle University. 2017.
+
+This is the help page.
+
+-->
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>Help</title>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="../styles/help.css" rel="stylesheet" type="text/css"/>
+
+        <link href="../styles/help_colorNormal.css" rel="stylesheet" type="text/css" id="styleNormal" title="styleNormal"/>
+
+        <link href="../styles/help_colorDeficiency.css" rel="alternate stylesheet" type="text/css" id="styleVisionDeficiency" title="styleVisionDeficiency"/>
+
+    </head>
+    <body>
+
+
+
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -Logo -->
+        <img src="../images/Newcastle-University-logo.jpg" alt="" WIDTH=150 >
+
+
+
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -h1 -->
+        <h1>VisABAC</h1>
+
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - Tab controls-->
+        <ul class="tab">
+            <li><a href="#introduction" class="tablinks" onclick="openTab(event, 'Introduction')" id="defaultOpen">Introduction </a></li>
+            <li><a href="#composition" class="tablinks" onclick="openTab(event, 'Composition')">Composition</a></li>
+            <li><a href="#sample" class="tablinks" onclick="openTab(event, 'Sample')">Sample</a></li>
+            <li><a href="#visualisation" class="tablinks" onclick="openTab(event, 'Visualisation')">Visualisation</a></li>
+            <li><a href="#operators" class="tablinks" onclick="openTab(event, 'Operators')" id="tabOperators">Operators</a></li>
+        </ul>
+
+
+
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - -Introduction -->
+        <div id="Introduction" class="tabcontent">
+
+            <p>An <b>Access Control Policy</b> is a collection of rules describing whether a given <i>access request</i> is permitted or denied.</p>
+
+            <p>The main challenge of designing an access control policy is to understand and analyse the evaluation of a given policy according to an <i>access request</i>.</p>
+
+            <p>An <b>Access Request</b> can be understood as set of attribute values, represented here by an element <i>NAME_v</i>, which is <i>true</i> if the attribute <i>NAME</i> has the value <i>v</i>, <i>false</i> if the attribute <i>NAME</i> does not have the value <i>v</i>, or <i>unknown</i> if we do not know whether the attribute <i>NAME</i> has the value <i>v</i> or not. </p>
+
+            <p>In the following, we will give you a <i>policy</i> and an <i>access request</i> and we will ask you to change the values of some attributes in order to obtain a specified decision (either <span class="permitInLine">Permit</span> or <span class="denyInLine">Deny</span>).</p>
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - -Composition---->
+        <div id="Composition" class="tabcontent">
+
+            <p>In general, a policy is a collection of <i>access rules</i>, which should collectively cover all possible cases in order to know what should be done in every situation.</p>
+
+            <p>An <b>Access Rule</b> is defined by associating a decision, such as Permit or Deny, with a condition over attribute values.</p>
+
+            <p>Rules are combined using <i>composition operators</i>, which specify how to combine the different decisions returned by the rules.</p>
+
+            <p>There are two main composition operators: <i>permit-overrides (POV)</i> and <i>deny-overrides (DOV)</i>. Intuitively speaking, POV returns Permit if any rule returns Permit; it will return Deny if any rule returns Deny; and NotApplicable if no rule returns Permit or Deny. Similarly, DOV returns Deny if any rule returns Deny; it will return Permit if any rule returns Permit, and NotApplicable if no rule returns Permit or Deny.</p>
+
+            <p><a href="#operators" onclick="document.getElementById('tabOperators').click();return false;">Operators</a> section describes in detail the <i>composition operators</i>.</p>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Sample-->
+        <div id="Sample" class="tabcontent">
+
+            <p>For instance, in order to indicate that any student who has not paid gym membership is denied access to the gym, one could define the following access policy:</p>
+
+
+
+
+
+            <ul class="introList">
+                <li>
+                    <!-- - - - - - - - - - - - - - - - - - - - - - - - ---->
+                    <p>PA: Deny if FEE_due</p>
+                    <div class="rule">
+                        <p>If <i>FEE_due</i> is <b>true</b>, then this particular rule evaluates to <span class="denyInLine"> Deny </span>. However, if <i>FEE_due</i> is <b>false</b>, then this rule evaluates to <span class="notApplicableInLine">NotApplicable</span>. This distinction is very important, as one could have expected this rule to evaluate to <span class="permitInLine">Permit</span> if <i>FEE_due</i> were <b>false</b>, however, rules describe as little as possible, and do not directly specify what happens if the condition they specify is <b>not true</b>.</p>                    
+
+                        <p>In addition, if <i>FEE_due</i> is <b>unknown</b>, then this rule evaluates to <span class="indeterminateInLine">Indeterminate<span class="smallDenyInLine">(D)</span></span>, indicating that some information is missing but that this rule could have evaluated to <span class="denyInLine">Deny</span>.</p>
+                    </div>
+                </li>
+
+
+
+
+
+                <li>
+                    <!-- - - - - - - - - - - - - - - - - - - - - - - - ---->
+                    <p>PB: Permit if NEWCASTLE_student</p>
+                    <div class="rule">
+                        <p>In a similar way as above, this rule evaluates to <span class="permitInLine">Permit</span> if NEWCASTLE_student is <b>true</b>, <span class="notApplicableInLine">NotApplicable</span> if NEWCASTLE_student is <b>false</b>, and <span class="indeterminateInLine">Indeterminate<span class="smallPermitInLine">(P)</span></span> if NEWCASTLE_student is <b>unknown</b>.</p>
+                    </div>
+                </li>
+
+
+
+
+
+
+
+                <li>
+                    <!-- - - - - - - - - - - - - - - - - - - - - - - - ---->
+                    <p>PC: POV(PA, PB)</p>
+                    <div class="rule">
+                        <p>We then create a policy by composing the rules PA and PB together. In this case, if NEWCASTLE_student is <b>true</b>, then PB evaluates to <span class="permitInLine">Permit</span>, and therefore PC also evaluates to <span class="permitInLine">Permit</span>, regardless of the value of FEE_due.  On the other hand, if NEWCASTLE_student is <b>false</b>, then PB evaluates to <span class="notApplicableInLine">NotApplicable</span>. In such a case, if FEE_due is <b>true</b>, then PC will evaluate to <span class="denyInLine">Deny</span>, whereas if FEE_due is <b>false</b>, then PC will evaluate to <span class="notApplicableInLine">NotApplicable</span>. The main intuition here is that the policy does not care if the fee is paid, as long as the person requesting the access is a student.</p>
+                    </div>          
+                </li>
+            </ul>
+
+
+
+
+
+            <p>The choice of the <i>composition operator</i> is crucial to the evaluation of the whole policy. Other operators are described in the  
+
+                <a href="#operators" onclick="document.getElementById('tabOperators').click();return false;">Operators</a> section</p>
+        </div>
+
+
+
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Sample-->
+        <div id="Operators" class="tabcontent">
+
+            <p>The following sub-sections show the most common composition operators used in access control policies. Please notice that not all of the operations are commutative (Not all tables are symmetrical).</p>
+
+            <p>Please bear in mind that VisABAC uses line conventions to represent different composition operators.</p>
+
+
+
+
+
+
+
+
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - Tab controls-->
+            <ul class="tab">
+                <li><a href="#dov" class="subTablinks" onclick="openSubTab(event, 'DOV')" id="defaultSubTabOpen">DOV</a></li>
+                <li><a href="#pov" class="subTablinks" onclick="openSubTab(event, 'POV')">POV</a></li>
+                <li><a href="#dup" class="subTablinks" onclick="openSubTab(event, 'DUP')">DUP</a></li>
+                <li><a href="#pud" class="subTablinks" onclick="openSubTab(event, 'PUD')">PUD</a></li>
+                <li><a href="#fa" class="subTablinks" onclick="openSubTab(event, 'FA')">FA</a></li>
+                <li><a href="#ooa" class="subTablinks" onclick="openSubTab(event, 'OOA')">OOA</a></li>
+            </ul>
+
+
+
+
+
+
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -DOV-->
+            <div id="DOV" class="subTabcontent">
+
+                <div class="spaceBetweenTables">
+                </div>
+
+                <p class="tableText">Deny-Overrides</p>
+
+
+                <div class="backgroundTable">
+                    <table>
+                        <tr>
+                            <th>DOV</th>
+                            <th>Permit</th>
+                            <th>Deny</th>
+                            <th>Not Applicable</th> 
+                            <th>Indeterminate (Permit)</th>
+                            <th>Indeterminate (Deny)</th>
+                            <th>Indeterminate (Permit-Deny)</th>    
+                        </tr>
+                        <tr>
+                            <td>Permit</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="deny">Deny</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+
+
+                        <tr>
+                            <td>Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                        </tr>
+
+                        <tr>
+                            <td>Not Applicable</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="deny">Deny</td>
+                            <td class="notApplicable">Not Applicable</td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Indeterminate (Permit)</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="deny">Deny</td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Deny)</td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td> 
+                            <td class="deny">Deny</td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Permit-Deny)</td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td> 
+                            <td class="deny">Deny</td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+                    </table>
+                </div>             
+                <div class="spaceBetweenTables">
+                </div>
+
+
+
+
+
+                <p class="tableSubText">Visual Representation</p>
+                <p>Given the following policy P=DOV(R1,R2) where {R1,R2:not applicable}; P is represented by the following line:</p>
+                <center><img src="../images/operators/dov.png" alt="" WIDTH=400 ></center>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -POV-->
+            <div id="POV" class="subTabcontent">
+
+                <div class="spaceBetweenTables">
+                </div>
+
+                <p class="tableText">Permit-Overrides</p>
+
+                <div class="backgroundTable">
+                    <table>
+                        <tr>
+                            <th>POV</th>
+                            <th>Permit</th>
+                            <th>Deny</th>
+                            <th>Not Applicable</th> 
+                            <th>Indeterminate (Permit)</th>
+                            <th>Indeterminate (Deny)</th>
+                            <th>Indeterminate (Permit-Deny)</th>    
+                        </tr>
+                        <tr>
+                            <td>Permit</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td>
+                            <td class="permit"> Permit</td>
+                            <td class="permit"> Permit</td>
+                        </tr>
+
+                        <tr>
+                            <td>Deny</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="deny">Deny</td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Not Applicable</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="deny">Deny</td>
+                            <td class="notApplicable">Not Applicable</td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Permit)</td>
+                            <td class="permit"> Permit</td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Deny)</td>
+                            <td class="permit"> Permit</td>
+                            <td class="deny">Deny</td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Permit-Deny)</td>
+                            <td class="permit"> Permit</td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="spaceBetweenTables">
+                </div>
+
+
+
+
+                <p class="tableSubText">Visual Representation</p>
+                <p>Given the following policy P=POV(R1,R2) where {R1,R2:not applicable}; P is represented by the following line:</p>
+                <center><img src="../images/operators/pov.png" alt="" WIDTH=400 ></center>
+
+            </div>
+
+
+
+
+
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -DUP-->
+            <div id="DUP" class="subTabcontent">
+
+                <div class="spaceBetweenTables">
+                </div>
+
+                <p class="tableText">Deny-Unless-Permit</p>
+
+
+                <div class="backgroundTable">
+                    <table>
+                        <tr>
+                            <th>DUP</th>
+                            <th>Permit</th>
+                            <th>Deny</th>
+                            <th>Not Applicable</th> 
+                            <th>Indeterminate (Permit)</th>
+                            <th>Indeterminate (Deny)</th>
+                            <th>Indeterminate (Permit-Deny)</th>    
+                        </tr>
+                        <tr>
+                            <td>Permit</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td>
+                            <td class="permit"> Permit</td>
+                            <td class="permit"> Permit</td>
+                        </tr>
+
+                        <tr>
+                            <td>Deny</td>
+                            <td class="permit"> Permit</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                        </tr>
+
+                        <tr>
+                            <td>Not Applicable</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Permit)</td>
+                            <td class="permit"> Permit</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Deny)</td>
+                            <td class="permit"> Permit</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Permit-Deny)</td>
+                            <td class="permit"> Permit</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="spaceBetweenTables">
+                </div>
+
+
+                <p class="tableSubText">Visual Representation</p>
+                <p>Given the following policy P=DUP(R1,R2) where {R1,R2:not applicable}; P is represented by the following line:</p>
+                <center><img id="dupImage" src="../images/operators/dup.png" alt="" WIDTH=400 ></center>
+
+
+            </div>
+
+
+
+
+
+
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -PUD-->
+            <div id="PUD" class="subTabcontent">
+
+                <div class="spaceBetweenTables">
+                </div>
+
+                <p class="tableText">Permit-Unless-Deny</p>
+
+
+                <div class="backgroundTable">
+                    <table>
+                        <tr>
+                            <th>PUD</th>
+                            <th>Permit</th>
+                            <th>Deny</th>
+                            <th>Not Applicable</th> 
+                            <th>Indeterminate (Permit)</th>
+                            <th>Indeterminate (Deny)</th>
+                            <th>Indeterminate (Permit-Deny)</th>    
+                        </tr>
+                        <tr>
+                            <td>Permit</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="deny">Deny</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td>
+                            <td class="permit"> Permit</td>
+                            <td class="permit"> Permit</td>
+                        </tr>
+
+                        <tr>
+                            <td>Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                        </tr>
+
+                        <tr>
+                            <td>Not Applicable</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="deny">Deny</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Permit)</td>
+                            <td class="permit"> Permit</td>
+                            <td class="deny">Deny</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Deny)</td>
+                            <td class="permit"> Permit</td>
+                            <td class="deny">Deny</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Permit-Deny)</td>
+                            <td class="permit"> Permit</td>
+                            <td class="deny">Deny</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="spaceBetweenTables">
+                </div>
+
+
+
+                <p class="tableSubText">Visual Representation</p>
+                <p>Given the following policy P=PUD(R1,R2) where {R1,R2:not applicable}; P is represented by the following line:</p>
+                <center><img id="pudImage" src="../images/operators/pud.png" alt="" WIDTH=400 ></center>
+
+            </div>   
+
+
+
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -FA-->
+            <div id="FA" class="subTabcontent">
+
+                <div class="spaceBetweenTables">
+                </div>
+
+                <p class="tableText">First-Applicable</p>
+
+
+                <div class="backgroundTable">
+                    <table>
+                        <tr>
+                            <th>FA</th>
+                            <th>Permit</th>
+                            <th>Deny</th>
+                            <th>Not Applicable</th> 
+                            <th>Indeterminate (Permit)</th>
+                            <th>Indeterminate (Deny)</th>
+                            <th>Indeterminate (Permit-Deny)</th>    
+                        </tr>
+                        <tr>
+                            <td>Permit</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td> 
+                            <td class="permit"> Permit</td>
+                            <td class="permit"> Permit</td>
+                            <td class="permit"> Permit</td>
+                        </tr>
+
+                        <tr>
+                            <td>Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                            <td class="deny">Deny</td>
+                        </tr>
+
+                        <tr>
+                            <td>Not Applicable</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="deny">Deny</td>
+                            <td class="notApplicable">Not Applicable</td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Permit)</td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td> 
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td> 
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td> 
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td> 
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Deny)</td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td> 
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td> 
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td> 
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Permit-Deny)</td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td> 
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td> 
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+                    </table>
+                </div>
+
+
+
+
+
+                <div class="spaceBetweenTables">
+                </div>
+
+
+                <p class="tableSubText">Visual Representation</p>
+                <p>Given the following policy P=FA(R1,R2) where {R1,R2:not applicable}; P is represented by the following line:</p>
+                <center><img src="../images/operators/fa.png" alt="" WIDTH=400 ></center>
+
+            </div>
+
+
+
+
+            <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -OOA-->
+            <div id="OOA" class="subTabcontent">
+
+                <div class="spaceBetweenTables">
+                </div>
+
+                <p class="tableText">Only-One-Applicable</p>
+
+
+                <div class="backgroundTable">
+                    <table>
+                        <tr>
+                            <th>OOA</th>
+                            <th>Permit</th>
+                            <th>Deny</th>
+                            <th>Not Applicable</th> 
+                            <th>Indeterminate (Permit)</th>
+                            <th>Indeterminate (Deny)</th>
+                            <th>Indeterminate (Permit-Deny)</th>    
+                        </tr>
+                        <tr>
+                            <td>Permit</td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="permit"> Permit</td> 
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Deny</td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="deny">Deny</td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Not Applicable</td>
+                            <td class="permit"> Permit</td> 
+                            <td class="deny">Deny</td>
+                            <td class="notApplicable">Not Applicable</td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Permit)</td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td>
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td> 
+                            <td class="indeterminate-Permit">Indeterminate <span class="permitColor">(Permit)</span></td> 
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Deny)</td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-Deny">Indeterminate <span class="denyColor">(Deny)</span></td> 
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>Indeterminate (Permit-Deny)</td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td> 
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td> 
+                            <td class="indeterminate-PermitDeny">Indeterminate <span class="permitDenyColor">(Permit-Deny)</span></td>
+                        </tr>
+                    </table>
+                </div>
+
+
+
+
+                <div class="spaceBetweenTables">
+                </div>
+
+                <p class="tableSubText">Visual Representation</p>
+                <p>Given the following policy P=OOA(R1,R2) where {R1,R2:not applicable}; P is represented by the following line:</p>
+                <center><img src="../images/operators/ooa.png" alt="" WIDTH=400 ></center>
+
+            </div>        
+
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- - - - - - - - - - - - - - - - - - - - - - - - - - Visualisation-->
+        <div id="Visualisation" class="tabcontent">
+
+            <p>Authoring and editing access control policy can be a complex and cognitive demanding task, especially when dealing with a large number of rules and attributes. Visualisation techniques are known to be helpful to users analysing intricate data, and can, in some contexts, help decreasing the cognitive load.</p>  
+
+            <p>VisABAC enables the visualisation of attribute based access control policies using the Zoomable Circle Packing technique.</p>
+
+
+            <ul class="introList">
+
+
+
+
+
+                <li>
+                    <!-- - - - - - - - - - - - - - - - - - - - - - - - ---->
+                    <p>A circle is either an ABAC rule or a composition of ABAC rules grouped by a composition operator.</p>
+                    <div class="rule">
+                        <p> As a consequence, a policy comprised of sub-policies is represented by circles containing sub-circles in a similar hierarchy as the given policy.</p>
+
+                        <p>For example, the visualisation in VisABAC of the following policy:</p>
+                        <center><img src="../images/policy/policy.png" alt="" WIDTH=400 ></center>
+
+                        <p>Under the following attribute values:</p>    
+                        <center><img src="../images/policy/attributes.png" alt="" WIDTH=400 ></center>
+
+                        <p> It is the following figure:</p>
+                        <center><img id="fullCircleImage" src="../images/policy/full_circle.png" alt="" WIDTH=350 ></center>
+
+                        <p>Figure shows that Level 0 (P) represents the whole policy by the most outer circle line; Level 1 (R1 and R2) represent the first level of the tree policy with smaller circles inside. Clicking on the inner circles activates a zoom that would display their respective targets, since they are atomic policies:</p>
+                        <center><img id="zoomImage"src="../images/policy/zoom.png" alt="" WIDTH=350 ></center>   
+
+                        <p>The corresponding console evaluation for the given policy gives additional details to the user:</p>
+
+                        <center><img id="consoleImage" src="../images/policy/console.png" alt="" WIDTH=450 ></center>   
+
+                    </div>
+                </li>
+
+
+
+
+
+                <li>
+                    <!-- - - - - - - - - - - - - - - - - - - - - - - - ---->
+                    <p>Circles are coloured according to the result of the policy they represent. </p>
+                    <div class="rule">
+                        <p>Green (or blue <a href="#footnote-2">[2]</a>) is for <span class="permitInLine">Permit</span>, red (or mustard yellow<a href="#footnote-2">[2]</a>) for <span class="denyInLine"> Deny </span>, white for <span class="notApplicableInLine">NotApplicable</span>, patterned-green for <span class="indeterminateInLine">Indeterminate<span class="smallPermitInLine">(P)</span></span>, patterned-red for <span class="indeterminateInLine">Indeterminate<span class="smallDenyInLine">(D)</span></span>, and patterned-grey for <span class="indeterminateInLine">Indeterminate<span class="smallPermitDenyInLine">(PD)</span></span>.</p>
+
+
+
+                    </div>
+                    <div class="footnote">
+                        <p id="footnote-2">[2] There is a colour deficiency mode, selectable through preferences, which caters for different types of colour deficiencies. In this mode, a shade of  blue is used instead of green; A shade of yellow is used instead of red.</p>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        <script type="text/javascript" src="../scripts/preferences.js"></script>   
+        <script type="text/javascript" src="../scripts/help.js"></script>  
+    </body>
+</html>
