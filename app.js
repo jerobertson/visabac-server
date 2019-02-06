@@ -7,8 +7,6 @@ app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-var index = require("./routes/index");
-index(app);
 var evaluate = require("./routes/evaluate");
 evaluate(app);
 
