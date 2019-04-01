@@ -13,6 +13,14 @@
  * @author James Robertson
  */
 exports.evaluate = function(req, res) {
+    if (req.query.extended === "true") {
+        extended(req, res);
+    } else {
+        simple(req, res);
+    }
+}
+
+function simple(req, res) {
     var textParser = require("../functions/parseTextFile");
     var policyParser = require("../functions/parsePolicyRules");
 
@@ -29,4 +37,13 @@ exports.evaluate = function(req, res) {
     console.log(policy.getPolicy());
 
     res.json(policy.getPolicy());
+}
+
+function extended(req, res) {
+    var textParser = require("../functions/parseTextFile");
+    var policyParser = require("../functions/parsePolicyRules");
+
+    var Policy = require("../public/classes/Policy").Policy;
+
+    res.status(501).send("Coming soon!");
 }

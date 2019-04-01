@@ -30,8 +30,6 @@ exports.compare = function(req, res) {
         }
     }
 
-    console.log(ruleNames);
-
     var out = {};
 
     for (var i = 0; i < ruleNames.length; i++) {
@@ -45,6 +43,7 @@ exports.compare = function(req, res) {
         }
     }
 
+    console.log("Comparing policies \"" + JSON.stringify(req.body.policies).replace(/(\\n)/g, ", ") + JSON.stringify(req.body.attributes) + "\":");
     console.log(out);
 
     res.json(out);

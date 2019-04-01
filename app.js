@@ -11,6 +11,8 @@ var evaluate = require("./routes/evaluate");
 evaluate(app);
 var compare = require("./routes/compare");
 compare(app);
+var modify = require("./routes/modify");
+modify(app);
 
 app.listen(port);
 
