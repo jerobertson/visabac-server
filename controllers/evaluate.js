@@ -42,8 +42,50 @@ function simple(req, res) {
 function extended(req, res) {
     var textParser = require("../functions/parseTextFile");
     var policyParser = require("../functions/parsePolicyRules");
+    var attributeParser = require("../functions/parsePolicyAttributes");
+
+    var policyString = req.body.policy + "\n" + JSON.stringify(req.body.attributes);
+
+    var policyArray = textParser.parseTextFile(policyString);
+    var policyRules = policyParser.parsePolicyRules(policyArray[0]);
+    var policyAttributes = JSON.parse(policyArray[1]);
+    var policyFullAttributeList = attributeParser.parsePolicyAttributes(policyRules);
+
+    var hiddenAttributes = policyFullAttributeList.filter(x => !Object.keys(policyAttributes).includes(x) || policyAttributes[x] === "Unknown");
+
+    console.log("The following attributes were hidden from a request: " + hiddenAttributes);
+    console.log("Performing an extended evaluation on all permutations of hidden attributes...");
 
     var Policy = require("../public/classes/Policy").Policy;
+    var policy = new Policy(policyAttributes, policyRules);
+    var initialEvaluation = policy.getPolicy();
 
-    res.status(501).send("Coming soon!");
+    var evaluations = request_builder(policyAttributes, policyRules, hiddenAttributes);
+
+    console.log(evaluations);
+
+    var result = { "policy": policyRules, "request_attributes": JSON.parse(policyArray[1]), "hidden_attributes": hiddenAttributes, "initial_evaluation": initialEvaluation, "evaluations": evaluations}
+
+    res.json(result);
+}
+
+function request_builder(policyAttributes, policyRules, hiddenAttributes) {
+    if (hiddenAttributes.length == 0) {
+        var Policy = require("../public/classes/Policy").Policy;
+        var policy = new Policy(policyAttributes, policyRules);
+        return { "request_attributes": JSON.parse(JSON.stringify(policyAttributes)), "evaluation": policy.getPolicy() };
+    }
+
+    var evaluations = [];
+
+    var stillHidden = hiddenAttributes.slice();
+    var attribute = stillHidden.pop();
+
+    policyAttributes[attribute] = "True";
+    evaluations = evaluations.concat(request_builder(policyAttributes, policyRules, stillHidden));
+
+    policyAttributes[attribute] = "False";
+    evaluations = evaluations.concat(request_builder(policyAttributes, policyRules, stillHidden));
+
+    return evaluations;
 }

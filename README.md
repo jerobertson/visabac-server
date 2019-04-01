@@ -26,4 +26,5 @@ You should get the following response:
 ## Current Features
 * The original VisABAC tool is still available at ```<url>/visualiserForm.html```.
 * ```<url>/evaluate POST```: Parses the request body and returns the policy evaluation.
+* ```<url>/evaluate?extended=true POST```: Parses the request body and returns an extended evaluation of the policy by analysing hidden attributes.
 * ```<url>/compare POST```: Parses the request body and returns the differences between multiple policies for a given set of attributes.
