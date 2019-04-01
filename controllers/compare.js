@@ -13,6 +13,7 @@ exports.compare = function(req, res) {
     var Policy = require("../public/classes/Policy").Policy;
 
     var policies = [];
+    var policiesRules = [];
     var ruleNames = [];
     
     for (var i = 0; i < req.body.policies.length; i++) {
@@ -23,6 +24,7 @@ exports.compare = function(req, res) {
         var policy = new Policy(policyAttributes, policyRules);
         
         policies.push(policy.getPolicy());
+        policiesRules.push(JSON.parse(JSON.stringify(policyRules)))
 
         var ruleKeys = Object.keys(policy.getPolicy());
         for (var j = 0; j < ruleKeys.length; j++) {
@@ -46,5 +48,7 @@ exports.compare = function(req, res) {
     console.log("Comparing policies \"" + JSON.stringify(req.body.policies).replace(/(\\n)/g, ", ") + JSON.stringify(req.body.attributes) + "\":");
     console.log(out);
 
-    res.json(out);
+    var result = {"policies": policiesRules, "attributes": req.body.attributes, "evaluations": out};
+
+    res.json(result);
 }

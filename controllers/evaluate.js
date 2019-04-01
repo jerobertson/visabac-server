@@ -36,7 +36,9 @@ function simple(req, res) {
     console.log("Evaluated policy \"" + policyString.replace(/(?:\r\n|\r|\n)/g, ", ") + "\":");
     console.log(policy.getPolicy());
 
-    res.json(policy.getPolicy());
+    var result = { "policy": policyRules, "request_attributes": policyAttributes, "evaluation": policy.getPolicy()}
+
+    res.json(result);
 }
 
 function extended(req, res) {
