@@ -4,13 +4,13 @@ An extension to [VisABAC](https://gitlab.com/morisset/visabac) that operates ser
 ## Demo
 The latest build is available at http://visabac-server.jerobertson.co.uk:3000/visualiserForm.html.
 
-You should be able to use any REST client (such as [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop)) to access the server-side aspect of visabac-server. Try making a POST request to http://visabac-server.jerobertson.co.uk:3000/evaluate using the following body (and making sure your content type is set to 'text/plain'):
+You should be able to use any REST client (such as [Postman](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop)) to access the server-side aspect of visabac-server. Try making a POST request to http://visabac-server.jerobertson.co.uk:3000/evaluate using the following body (and making sure your content type is set to 'application/json'):
 
 ```
-PX: Deny if BILL_unpaid
-PY: Permit if OR(OWNER_allow, JUDGE_allow)
-PZ: DUP(PX, PY)
-{"JUDGE_allow":"Unknown","OWNER_allow":"False","BILL_unpaid":"Unknown"}
+{
+    "policy": "PX: Deny if BILL_unpaid\nPY: Permit if OR(OWNER_allow, JUDGE_allow)\nPZ: DUP(PX, PY)",
+    "attributes": {"JUDGE_allow":"Unknown","OWNER_allow":"False","BILL_unpaid":"Unknown"}
+}
 ```
 
 You should get the following response:
@@ -25,4 +25,5 @@ You should get the following response:
 
 ## Current Features
 * The original VisABAC tool is still available at ```<url>/visualiserForm.html```.
-* ```<url>/evaluate POST```: Parses the request body assuming the same format as VisABAC's save policy tool and returns the policy evaluation.
+* ```<url>/evaluate POST```: Parses the request body and returns the policy evaluation.
+* ```<url>/compare POST```: Parses the request body and returns the differences between multiple policies for a given set of attributes.
