@@ -11,4 +11,8 @@ module.exports = function(app) {
 
     app.route("/evaluate")
         .post(evaluate.evaluate);
+    app.route("/evaluate/rule/:ruleName")
+        .post(evaluate.evaluateSpecificRule);
+    app.route("/evaluate/rule/:ruleName/compositor/:compositor")
+        .post(evaluate.evaluateWithComposition);
 };

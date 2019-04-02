@@ -20,6 +20,14 @@ exports.evaluate = function(req, res) {
     }
 }
 
+exports.evaluateSpecificRule = function(req, res) {
+    res.status(501).send("Coming soon!");
+}
+
+exports.evaluateWithComposition = function(req, res) {
+    res.status(501).send("Coming soon!");
+}
+
 function simple(req, res) {
     var textParser = require("../functions/parseTextFile");
     var policyParser = require("../functions/parsePolicyRules");
