@@ -7,6 +7,8 @@
  * @author James Robertson
  */
 exports.compare = function(req, res) {
+    console.log("Performing a policy comparison...");
+
     var textParser = require("../functions/parseTextFile");
     var policyParser = require("../functions/parsePolicyRules");
 
@@ -45,10 +47,9 @@ exports.compare = function(req, res) {
         }
     }
 
-    console.log("Comparing policies \"" + JSON.stringify(req.body.policies).replace(/(\\n)/g, ", ") + JSON.stringify(req.body.attributes) + "\":");
-    console.log(out);
-
     var result = {"policies": policiesRules, "attributes": req.body.attributes, "evaluations": out};
+
+    console.log(JSON.stringify(result));
 
     res.json(result);
 }

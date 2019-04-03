@@ -36,6 +36,16 @@ Here are some example requests and responses.
 }
 ```
 
+#### Other Parameters
+
+```POST http://visabac-server.jerobertson.co.uk:3000/evaluate/rule/:ruleName```
+
+Returns only the evaluation for :ruleName.
+
+```POST http://visabac-server.jerobertson.co.uk:3000/evaluate/rule/:ruleName/evaluation/:testFor```
+
+Returns "True" or "False" depending on whether :ruleName evaluates to :testFor.
+
 ### Extended Evaluation
 
 ```POST http://visabac-server.jerobertson.co.uk:3000/evaluate?extended=true```
@@ -120,6 +130,16 @@ Here are some example requests and responses.
     ]
 }
 ```
+
+#### Other Parameters
+
+```POST http://visabac-server.jerobertson.co.uk:3000/evaluate/rule/:ruleName?extended=true```
+
+Returns an array of possible evaluations for :ruleName.
+
+```POST http://visabac-server.jerobertson.co.uk:3000/evaluate/rule/:ruleName/evaluation/:testFor?extended=true```
+
+Returns "True" or "False" depending on whether it is possible for ruleName to evaluate to :testFor.
 
 ### Policy Comparison
 
