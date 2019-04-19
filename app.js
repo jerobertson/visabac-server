@@ -7,6 +7,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+var helloworld = require("./routes/helloworld");
+helloworld(app);
 var evaluate = require("./routes/evaluate");
 evaluate(app);
 var compare = require("./routes/compare");

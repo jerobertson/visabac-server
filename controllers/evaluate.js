@@ -22,11 +22,9 @@ exports.evaluate = function(req, res) {
     }
 }
 
-exports.evaluateSpecificRule = function(req, res) {
-    res.status(501).send("Coming soon!");
-}
-
 function simple(req, res) {
+    var t0 = new Date().getTime();
+
     var textParser = require("../functions/parseTextFile");
     var policyParser = require("../functions/parsePolicyRules");
 
@@ -50,12 +48,15 @@ function simple(req, res) {
         var result = { "policy": policyRules, "request_attributes": policyAttributes, "evaluation": policy.getPolicy()}
     }
 
+    result.time_taken = new Date().getTime() - t0;
     console.log(JSON.stringify(result));
 
     res.json(result);
 }
 
 function extended(req, res) {
+    var t0 = new Date().getTime();
+    
     var textParser = require("../functions/parseTextFile");
     var policyParser = require("../functions/parsePolicyRules");
     var attributeParser = require("../functions/parsePolicyAttributes");
@@ -84,6 +85,7 @@ function extended(req, res) {
         var result = { "policy": policyRules, "request_attributes": JSON.parse(policyArray[1]), "hidden_attributes": hiddenAttributes, "initial_evaluation": initialEvaluation, "extended_evaluations": evaluations}
     }
 
+    result.time_taken = new Date().getTime() - t0;
     console.log(JSON.stringify(result));
 
     res.json(result);
