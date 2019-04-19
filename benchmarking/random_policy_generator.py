@@ -30,18 +30,15 @@ def build_tree(args):
 
     rules = ""
     attributes = {}
-    if args.json == False or args.plaintext == True:
+    if args.plaintext == True:
         print("Plaintext:\n")
 
     for level, e in reversed(list(enumerate(tree))):
         for rule in range(len(tree[level])):
             if len(tree[level][rule]["children"]) == 0:
                 rule_string = "R{}{}: {} if ATT{}{}".format(level, rule, random.choice(["Permit", "Deny"]), level, rule)
-                if args.json == True:
-                    if args.plaintext == True:
-                        print(rule_string)
-                    rules += rule_string + "\n"
-                else:
+                rules += rule_string + "\n"
+                if args.plaintext == True:
                     print(rule_string)
                 if random.random() < args.unknown_chance:
                     attributes["ATT{}{}".format(level, rule)] = "Unknown"
@@ -53,23 +50,22 @@ def build_tree(args):
                 for child in range(1, len(tree[level][rule]["children"])):
                     rule_string += ", {}".format("R{}{}".format(level + 1, tree[level][rule]["children"][child]))
                 rule_string += ")"
-                if args.json == True:
-                    if args.plaintext == True:
-                        print(rule_string)
-                    rules += rule_string + "\n"
-                else:
+                rules += rule_string + "\n"
+                if args.plaintext == True:
                     print(rule_string)
 
+    body = {}
+    body["policy"] = rules
+    body["attributes"] = attributes
+
+    if args.plaintext == True:
+        print(json.dumps(attributes) + "\n")
+
     if args.json == True:
-        if args.plaintext == True:
-            print(json.dumps(attributes) + "\n")
         print("JSON:\n")
-        body = {}
-        body["policy"] = rules
-        body["attributes"] = attributes
         print(json.dumps(body))
-    else:
-        print(json.dumps(attributes))
+
+    return body
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -78,7 +74,7 @@ if __name__ == "__main__":
     parser.add_argument("--max-composite-size", help="Maximum number of rules in a composition", type=int, default=3)
     parser.add_argument("--unknown-chance", help="Chance an attribute is set as Unknown", type=float, default=0.66)
     parser.add_argument("--json", help="Print policy as JSON", action="store_true")
-    parser.add_argument("--plaintext", help="Print policy as plaintext (only required if --json flag is also set)", action="store_true")
+    parser.add_argument("--plaintext", help="Print policy as plaintext", action="store_true")
     
     args = parser.parse_args()
     build_tree(args)

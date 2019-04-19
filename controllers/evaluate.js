@@ -74,6 +74,11 @@ function extended(req, res) {
     var policyFullAttributeList = attributeParser.parsePolicyAttributes(policyRules);
 
     var hiddenAttributes = policyFullAttributeList.filter(x => !Object.keys(policyAttributes).includes(x) || policyAttributes[x] === "Unknown");
+    if (hiddenAttributes.length > 10) {
+        res.status(400)
+        res.send("Too many hidden attributes!")
+        return;
+    }
 
     var Policy = require("../public/classes/Policy").Policy;
     var policy = new Policy(policyAttributes, policyRules);
