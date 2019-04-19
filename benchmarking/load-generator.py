@@ -26,7 +26,7 @@ def post(count):
         t0 = time.time()
         r = requests.post(url, json=body)
         times.append(int(round((time.time() - t0) * 1000)))
-        internal_times.append(int(r.json()["time_taken"]))
+        internal_times.append(int(r.json()["debug"]["time_taken"]))
         print(str(i + 1) + "/" + str(count) + ": " + str(times[i]) + "ms" + " (" + str(internal_times[i]) + "ms)")
     print("Avg.: " + str(np.mean(times)) + "ms" + " (" + str(np.mean(internal_times)) + "ms)")
     print("Times Description:")

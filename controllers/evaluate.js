@@ -1,5 +1,7 @@
 "use strict";
 
+var recurCount = 0;
+
 /**
  * Reads in the request body and parses the policy and attributes,
  * returning the policy evaluations.
@@ -13,6 +15,8 @@
  * @author James Robertson
  */
 exports.evaluate = function(req, res) {
+    recurCount = 0;
+
     if (req.query.extended === "true") {
         console.log("Performing an extended evaluation...");
         extended(req, res);
@@ -48,7 +52,8 @@ function simple(req, res) {
         var result = { "policy": policyRules, "request_attributes": policyAttributes, "evaluation": policy.getPolicy()}
     }
 
-    result.time_taken = new Date().getTime() - t0;
+    result.debug = {}
+    result.debug.time_taken = new Date().getTime() - t0;
     console.log(JSON.stringify(result));
 
     res.json(result);
@@ -85,7 +90,10 @@ function extended(req, res) {
         var result = { "policy": policyRules, "request_attributes": JSON.parse(policyArray[1]), "hidden_attributes": hiddenAttributes, "initial_evaluation": initialEvaluation, "extended_evaluations": evaluations}
     }
 
-    result.time_taken = new Date().getTime() - t0;
+    result.debug = {}
+    result.debug.time_taken = new Date().getTime() - t0;
+    result.debug.max_evals = Math.pow(2, hiddenAttributes.length);
+    result.debug.eval_count = recurCount;
     console.log(JSON.stringify(result));
 
     res.json(result);
@@ -95,6 +103,7 @@ function response_builder(policyAttributes, policyRules, hiddenAttributes) {
     if (hiddenAttributes.length == 0) {
         var Policy = require("../public/classes/Policy").Policy;
         var policy = new Policy(policyAttributes, policyRules);
+        recurCount++;
         return { "request_attributes": JSON.parse(JSON.stringify(policyAttributes)), "evaluation": policy.getPolicy() };
     }
 
@@ -116,6 +125,7 @@ function response_builder_rule(policyAttributes, policyRules, hiddenAttributes, 
     if (hiddenAttributes.length == 0) {
         var Policy = require("../public/classes/Policy").Policy;
         var policy = new Policy(policyAttributes, policyRules);
+        recurCount++;
         return [policy.getPolicy()[rule]];
     }
 
