@@ -5,14 +5,9 @@ import json
 
 compositors = ["DOV", "POV", "DUP", "PUD", "FA", "OPO", "ODO", "OOA"]
 
-class Rule:
-    def __init__(self, id):
-        self.id = id
-        self.children = []
-
 def build_tree(args):
     tree = {}
-    tree[0] = [{"id": 0, "children": []}]
+    tree[0] = [[]]
 
     levels = random.randint(args.min_depth, args.max_depth)
 
@@ -21,12 +16,12 @@ def build_tree(args):
         rule_count = random.randint(1, len(tree[level - 1]) * (args.max_composite_size - 1))
         for r in range(rule_count):
             parent = random.randint(0, len(tree[level - 1]) - 1)
-            if len(tree[level - 1][parent]["children"]) == 0:
-                tree[level].append({"id": r + rule_count, "children": []})
-                tree[level - 1][parent]["children"].append(r + rule_count)
-            if len(tree[level - 1][parent]["children"]) < args.max_composite_size:
-                tree[level].append({"id": r, "children": []})
-                tree[level - 1][parent]["children"].append(r)
+            if len(tree[level - 1][parent]) == 0:
+                tree[level].append([])
+                tree[level - 1][parent].append(r + rule_count)
+            if len(tree[level - 1][parent]) < args.max_composite_size:
+                tree[level].append([])
+                tree[level - 1][parent].append(r)
 
     rules = ""
     attributes = {}
@@ -35,7 +30,7 @@ def build_tree(args):
 
     for level, e in reversed(list(enumerate(tree))):
         for rule in range(len(tree[level])):
-            if len(tree[level][rule]["children"]) == 0:
+            if len(tree[level][rule]) == 0:
                 rule_string = "R{}{}: {} if ATT{}{}".format(level, rule, random.choice(["Permit", "Deny"]), level, rule)
                 rules += rule_string + "\n"
                 if args.plaintext == True:
@@ -46,9 +41,9 @@ def build_tree(args):
                     attributes["ATT{}{}".format(level, rule)] = random.choice(["True", "False"])
             else:
                 compositor = random.choice(compositors)
-                rule_string = "R{}{}: {}({}".format(level, rule, compositor, "R{}{}".format(level + 1, tree[level][rule]["children"][0]))
-                for child in range(1, len(tree[level][rule]["children"])):
-                    rule_string += ", {}".format("R{}{}".format(level + 1, tree[level][rule]["children"][child]))
+                rule_string = "R{}{}: {}({}".format(level, rule, compositor, "R{}{}".format(level + 1, tree[level][rule][0]))
+                for child in range(1, len(tree[level][rule])):
+                    rule_string += ", {}".format("R{}{}".format(level + 1, tree[level][rule][child]))
                 rule_string += ")"
                 rules += rule_string + "\n"
                 if args.plaintext == True:
