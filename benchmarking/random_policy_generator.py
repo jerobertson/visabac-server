@@ -10,8 +10,6 @@ def build_tree(args):
     tree.append([random.choice(range(2, args.max_composite_size + 1))])
 
     level_count = random.randint(max(2, args.min_depth), args.max_depth)
-    composition_counts = [0]
-    composition_counts.extend(range(2, args.max_composite_size))
 
     for level in range(1, level_count):
         tree.append([])
@@ -23,7 +21,10 @@ def build_tree(args):
                 else:
                     tree[level].append(random.randint(2, args.max_composite_size))
                     for i in range(1, parent):
-                        tree[level].append(random.choice(composition_counts))
+                        if random.random() < args.leaf_chance:
+                            tree[level].append(0)
+                        else:
+                            tree[level].append(random.randint(2, args.max_composite_size))
 
     rules = ""
     attributes = {}
@@ -81,12 +82,18 @@ if __name__ == "__main__":
     parser.add_argument("--min-depth", help="Minimum number of levels for the policy tree", type=int, default=2)
     parser.add_argument("--max-depth", help="Maximum number of levels for the policy tree", type=int, default=5)
     parser.add_argument("--max-composite-size", help="Maximum number of rules in a composition", type=int, default=3)
+    parser.add_argument("--leaf-chance", help="Chance a rule is not a composition", type=float, default=-1.0)
     parser.add_argument("--unknown-chance", help="Chance an attribute is set as Unknown", type=float, default=0.66)
     parser.add_argument("--json", help="Print policy as JSON", action="store_true")
     parser.add_argument("--plaintext", help="Print policy as plaintext", action="store_true")
     parser.add_argument("--file", help="Name of the file to store the generated policy in. Requires either --json or --plaintext to be set", type=str)
     
     args = parser.parse_args()
+    if args.leaf_chance < 0 or args.leaf_chance > 1:
+        setattr(args, "leaf_chance", 1.0 / args.max_composite_size)
+    if args.unknown_chance < 0 or args.unknown_chance > 1:
+        setattr(args, "unknown_chance", 0.66)
+
     if args.json is False and args.plaintext is False and args.file is None:
         print("Please specify either --json, --plaintext, or --file! Program will terminate.")
     else:            
