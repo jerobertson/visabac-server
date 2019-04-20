@@ -138,25 +138,29 @@ function response_builder_rule(policyAttributes, policyRules, hiddenAttributes, 
     var stillHidden = hiddenAttributes.slice();
     var attribute = stillHidden.pop();
 
-    policyAttributes[attribute] = "True";
-    var inner_eval = response_builder_rule(policyAttributes, policyRules, stillHidden, rule, requiredEvaluation);
-    if (inner_eval === "True") return "True";
-    for (var i = 0; i < inner_eval.length; i++) {
-        if (inner_eval[i] === requiredEvaluation) return "True";
-        if (evaluations.indexOf(inner_eval[i]) === -1) {
-            evaluations.push(inner_eval[i]);
-            if (evaluations.length === 6) return evaluations;
-        }
-    }
-
     policyAttributes[attribute] = "False";
     var inner_eval = response_builder_rule(policyAttributes, policyRules, stillHidden, rule, requiredEvaluation);
     if (inner_eval === "True") return "True";
-    for (var i = 0; i < inner_eval.length; i++) {
-        if (inner_eval[i] === requiredEvaluation) return "True";
-        if (evaluations.indexOf(inner_eval[i]) === -1) {
-            evaluations.push(inner_eval[i]);
-            if (evaluations.length === 6) return evaluations;
+    if (Array.isArray(inner_eval)) {
+        for (var i = 0; i < inner_eval.length; i++) {
+            if (inner_eval[i] === requiredEvaluation) return "True";
+            if (evaluations.indexOf(inner_eval[i]) === -1) {
+                evaluations.push(inner_eval[i]);
+                if (evaluations.length === 4) return evaluations;
+            }
+        }
+    }
+
+    policyAttributes[attribute] = "True";
+    var inner_eval = response_builder_rule(policyAttributes, policyRules, stillHidden, rule, requiredEvaluation);
+    if (inner_eval === "True") return "True";
+    if (Array.isArray(inner_eval)) {
+        for (var i = 0; i < inner_eval.length; i++) {
+            if (inner_eval[i] === requiredEvaluation) return "True";
+            if (evaluations.indexOf(inner_eval[i]) === -1) {
+                evaluations.push(inner_eval[i]);
+                if (evaluations.length === 4) return evaluations;
+            }
         }
     }
 

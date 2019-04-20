@@ -24,7 +24,6 @@ def build_tree(args):
                     tree[level].append(random.randint(2, args.max_composite_size))
                     for i in range(1, parent):
                         tree[level].append(random.choice(composition_counts))
-    print(tree)
 
     rules = ""
     attributes = {}
