@@ -14,51 +14,51 @@ def build_tree(args):
     for level in range(1, levels):
         tree[level] = []
         rule_count = random.randint(1, len(tree[level - 1]) * (args.max_composite_size - 1))
-        for r in range(rule_count):
-            parent = random.randint(0, len(tree[level - 1]) - 1)
-            if len(tree[level - 1][parent]) == 0:
+        r = 0
+        while r < rule_count:
+            parent = tree[level - 1][random.randint(0, len(tree[level - 1]) - 1)]
+            if len(parent) == 0:
                 tree[level].append([])
-                tree[level - 1][parent].append(r + rule_count)
-            if len(tree[level - 1][parent]) < args.max_composite_size:
+                parent.append(r)
+                r += 1
+                rule_count += 1
+            if len(parent) < args.max_composite_size:
                 tree[level].append([])
-                tree[level - 1][parent].append(r)
+                parent.append(r)
+            r += 1
 
     rules = ""
     attributes = {}
-    if args.plaintext == True:
-        print("Plaintext:\n")
 
     for level, e in reversed(list(enumerate(tree))):
         for rule in range(len(tree[level])):
             if len(tree[level][rule]) == 0:
-                rule_string = "R{}{}: {} if ATT{}{}".format(level, rule, random.choice(["Permit", "Deny"]), level, rule)
-                rules += rule_string + "\n"
-                if args.plaintext == True:
-                    print(rule_string)
+                rule_string = "\nR{}{}: {} if ATT{}{}".format(level, rule, random.choice(["Permit", "Deny"]), level, rule)
+                rules += rule_string
                 if random.random() < args.unknown_chance:
                     attributes["ATT{}{}".format(level, rule)] = "Unknown"
                 else:
                     attributes["ATT{}{}".format(level, rule)] = random.choice(["True", "False"])
             else:
                 compositor = random.choice(compositors)
-                rule_string = "R{}{}: {}({}".format(level, rule, compositor, "R{}{}".format(level + 1, tree[level][rule][0]))
+                rule_string = "\nR{}{}: {}({}".format(level, rule, compositor, "R{}{}".format(level + 1, tree[level][rule][0]))
                 for child in range(1, len(tree[level][rule])):
                     rule_string += ", {}".format("R{}{}".format(level + 1, tree[level][rule][child]))
                 rule_string += ")"
-                rules += rule_string + "\n"
-                if args.plaintext == True:
-                    print(rule_string)
+                rules += rule_string
 
     body = {}
     body["policy"] = rules
     body["attributes"] = attributes
 
     if args.plaintext == True:
+        print("Plaintext:")
+        print(rules)
         print(json.dumps(attributes) + "\n")
 
     if args.json == True:
         print("JSON:\n")
-        print(json.dumps(body))
+        print(json.dumps(body) + "\n")
 
     if args.file is not None:
         with open(args.file, 'w') as outfile:
