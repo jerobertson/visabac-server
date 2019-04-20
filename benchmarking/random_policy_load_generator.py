@@ -39,6 +39,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     setattr(args, "json", False)
     setattr(args, "plaintext", False)
+    setattr(args, "file", None)
     
     if args.url is not None:
         post(args)

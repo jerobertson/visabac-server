@@ -65,6 +65,16 @@ def build_tree(args):
         print("JSON:\n")
         print(json.dumps(body))
 
+    if args.file is not None:
+        with open(args.file, 'w') as outfile:
+            if args.plaintext == True:
+                outfile.write(rules)
+                json.dump(attributes, outfile)
+            elif args.json == True:
+                json.dump(body, outfile)
+            else:
+                print("Please specify either --json or --plaintext when dumping to a file! Program will terminate.")
+
     return body
 
 if __name__ == "__main__":
@@ -75,6 +85,10 @@ if __name__ == "__main__":
     parser.add_argument("--unknown-chance", help="Chance an attribute is set as Unknown", type=float, default=0.66)
     parser.add_argument("--json", help="Print policy as JSON", action="store_true")
     parser.add_argument("--plaintext", help="Print policy as plaintext", action="store_true")
+    parser.add_argument("--file", help="Name of the file to store the generated policy in. Requires either --json or --plaintext to be set", type=str)
     
     args = parser.parse_args()
-    build_tree(args)
+    if args.json is False and args.plaintext is False and args.file is None:
+        print("Please specify either --json, --plaintext, or --file! Program will terminate.")
+    else:            
+        build_tree(args)
