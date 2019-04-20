@@ -6,51 +6,46 @@ import json
 compositors = ["DOV", "POV", "DUP", "PUD", "FA", "OPO", "ODO", "OOA"]
 
 def build_tree(args):
-    tree = []
-    tree.append([random.choice(range(2, args.max_composite_size + 1))])
+    tree = {}
+    tree[0] = [[]]
 
-    level_count = random.randint(max(2, args.min_depth), args.max_depth)
-    composition_counts = [0]
-    composition_counts.extend(range(2, args.max_composite_size))
+    levels = random.randint(args.min_depth, args.max_depth)
 
-    for level in range(1, level_count):
-        tree.append([])
-        for parent in tree[level - 1]:
-            if parent != 0:
-                if (level + 1 == level_count):
-                    for i in range(parent):
-                        tree[level].append(0)
-                else:
-                    tree[level].append(random.randint(2, args.max_composite_size))
-                    for i in range(1, parent):
-                        tree[level].append(random.choice(composition_counts))
-    print(tree)
+    for level in range(1, levels):
+        tree[level] = []
+        rule_count = random.randint(1, len(tree[level - 1]) * (args.max_composite_size - 1))
+        r = 0
+        while r < rule_count:
+            parent = tree[level - 1][random.randint(0, len(tree[level - 1]) - 1)]
+            if len(parent) == 0:
+                tree[level].append([])
+                parent.append(r)
+                r += 1
+                rule_count += 1
+            if len(parent) < args.max_composite_size:
+                tree[level].append([])
+                parent.append(r)
+            r += 1
 
     rules = ""
     attributes = {}
 
     for level, e in reversed(list(enumerate(tree))):
-        counter = 0
-        child = 0
-        for rule in e:
-            if rule == 0:
-                rule_string = "\nR{}{}: {} if ATT{}{}".format(level, counter, random.choice(["Permit", "Deny"]), level, counter)
+        for rule in range(len(tree[level])):
+            if len(tree[level][rule]) == 0:
+                rule_string = "\nR{}{}: {} if ATT{}{}".format(level, rule, random.choice(["Permit", "Deny"]), level, rule)
                 rules += rule_string
                 if random.random() < args.unknown_chance:
-                    attributes["ATT{}{}".format(level, counter)] = "Unknown"
+                    attributes["ATT{}{}".format(level, rule)] = "Unknown"
                 else:
-                    attributes["ATT{}{}".format(level, counter)] = random.choice(["True", "False"])
-                counter += 1
+                    attributes["ATT{}{}".format(level, rule)] = random.choice(["True", "False"])
             else:
                 compositor = random.choice(compositors)
-                rule_string = "\nR{}{}: {}(R{}{}".format(level, counter, compositor, level + 1, child)
-                child += 1
-                for c in range(1, rule):
-                    rule_string += ", R{}{}".format(level + 1, child)
-                    child += 1
+                rule_string = "\nR{}{}: {}({}".format(level, rule, compositor, "R{}{}".format(level + 1, tree[level][rule][0]))
+                for child in range(1, len(tree[level][rule])):
+                    rule_string += ", {}".format("R{}{}".format(level + 1, tree[level][rule][child]))
                 rule_string += ")"
                 rules += rule_string
-                counter += 1
 
     body = {}
     body["policy"] = rules
