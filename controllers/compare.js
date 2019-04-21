@@ -18,16 +18,20 @@ exports.compare = function(req, res) {
     var policiesRules = [];
     var ruleNames = [];
     
+    // For each policy, parse it, and get its simple evaluation. 
     for (var i = 0; i < req.body.policies.length; i++) {
+        // Get the request in to a suitable format for the VisABAC tool, and create a Policy object.
         var policyString = req.body.policies[i] + "\n" + JSON.stringify(req.body.attributes);
         var policyArray = textParser.parseTextFile(policyString);
         var policyRules = policyParser.parsePolicyRules(policyArray[0]);
         var policyAttributes = JSON.parse(policyArray[1]);
         var policy = new Policy(policyAttributes, policyRules);
         
+        // Add the policy to the list of parsed policies, and likewise with the rules.
         policies.push(policy.getPolicy());
         policiesRules.push(JSON.parse(JSON.stringify(policyRules)))
 
+        // Get all the names of the rules in the policy and add them to ruleNames (avoiding duplicates).
         var ruleKeys = Object.keys(policy.getPolicy());
         for (var j = 0; j < ruleKeys.length; j++) {
             if (ruleNames.indexOf(ruleKeys[j]) === -1) ruleNames.push(ruleKeys[j]);
@@ -36,6 +40,9 @@ exports.compare = function(req, res) {
 
     var out = {};
 
+    // Having gathered all of the rule names from all of the policies, build a response object
+    // that contains the decisions for each of the rules for each of the policies, inserting
+    // "Undefined" when a policy does not have that rule.
     for (var i = 0; i < ruleNames.length; i++) {
         out[ruleNames[i]] = [];
         for (var j = 0; j < policies.length; j++) {

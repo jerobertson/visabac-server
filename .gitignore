@@ -62,4 +62,4 @@ typings/
 
 # project specific exclusions
 benchmarking/example.out
-.pyc
+*.pyc

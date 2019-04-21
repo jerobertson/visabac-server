@@ -7,11 +7,17 @@ import numpy as np
 import pandas as pd
 import random_policy_generator as rpg
 
+
+# Posts a request to a given url, and records timings and returned debug information.
+# Prints out:
+# - Average response time
+# - Average processing time
+# - Short-stopping efficiency.
 def post(args):
     times = []
     internal_times = []
     short_stopping = []
-    for i in range(args.count):
+    for i in range(args.count): # Make i requests, take the average of these.
         body = rpg.build_tree(args)
         t0 = time.time()
         r = requests.post(args.url, json=body)
@@ -24,6 +30,7 @@ def post(args):
             short_stopping.append((float(eval_count) / float(max_evals)) * 100)
             print("{}/{}: {}ms ({}ms) {}:{}".format(i + 1, args.count, times[len(times) - 1], internal_times[len(internal_times) - 1], eval_count, max_evals))
         except:
+            # If the response doesn't have parsable JSON, we can just discard it and ignore this run.
             pass
     print("Avg.: {}ms ({}ms) {}%").format(np.mean(times), np.mean(internal_times), np.mean(short_stopping))
 
@@ -37,6 +44,8 @@ if __name__ == "__main__":
     parser.add_argument("--unknown-chance", help="Chance an attribute is set as Unknown", type=float, default=0.66)
     
     args = parser.parse_args()
+
+    # Set attributes required for random_policy_generator (such that nothing is printed out).
     setattr(args, "json", False)
     setattr(args, "plaintext", False)
     setattr(args, "file", None)
