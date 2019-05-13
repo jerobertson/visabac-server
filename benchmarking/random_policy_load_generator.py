@@ -42,6 +42,7 @@ if __name__ == "__main__":
     parser.add_argument("--max-depth", help="Maximum number of levels for the policy tree", type=int, default=5)
     parser.add_argument("--max-composite-size", help="Maximum number of rules in a composition", type=int, default=3)
     parser.add_argument("--unknown-chance", help="Chance an attribute is set as Unknown", type=float, default=0.66)
+    parser.add_argument("--leaf-chance", help="Chance a rule is not a composition", type=float, default=-1.0)
     
     args = parser.parse_args()
 

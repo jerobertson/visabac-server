@@ -9,6 +9,8 @@
 exports.compare = function(req, res) {
     console.log("Performing a policy comparison...");
 
+    var t0 = new Date().getTime();
+
     var textParser = require("../functions/parseTextFile");
     var policyParser = require("../functions/parsePolicyRules");
 
@@ -56,6 +58,8 @@ exports.compare = function(req, res) {
 
     var result = {"policies": policiesRules, "attributes": req.body.attributes, "evaluations": out};
 
+    result.debug = {}
+    result.debug.time_taken = new Date().getTime() - t0;
     console.log(JSON.stringify(result));
 
     res.json(result);
